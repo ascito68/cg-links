@@ -91,6 +91,23 @@
 
     .link-btn:active {
       background: #f7f4f0;
+      transform: scale(0.985);
+    }
+
+    .ripple {
+      position: absolute;
+      border-radius: 50%;
+      width: 10px;
+      height: 10px;
+      background: var(--accent);
+      opacity: 0.25;
+      transform: scale(0);
+      animation: ripple-anim .5s ease-out forwards;
+      pointer-events: none;
+    }
+
+    @keyframes ripple-anim {
+      to { transform: scale(60); opacity: 0; }
     }
 
     .link-btn .label {
@@ -168,5 +185,18 @@
     <p class="footer">cibelli / guadagno — 2026</p>
 
   </div>
+  <script>
+    document.querySelectorAll('.link-btn').forEach(btn => {
+      btn.addEventListener('pointerdown', e => {
+        const r = document.createElement('span');
+        r.className = 'ripple';
+        const rect = btn.getBoundingClientRect();
+        r.style.left = (e.clientX - rect.left - 5) + 'px';
+        r.style.top  = (e.clientY - rect.top  - 5) + 'px';
+        btn.appendChild(r);
+        r.addEventListener('animationend', () => r.remove());
+      });
+    });
+  </script>
 </body>
 </html>
